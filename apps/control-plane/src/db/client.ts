@@ -36,7 +36,22 @@ export function openDatabase(path: string) {
 export type Database = ReturnType<typeof openDatabase>["db"];
 export type Sqlite = DatabaseSync;
 
-export async function withTransaction<T>(sqlite: Sqlite, fn: () => Promise<T>): Promise<T> {
+const transactionQueues = new WeakMap<Sqlite, Promise<unknown>>();
+
+// Transactions on one connection run one at a time. fn must await only DB calls
+// (they resolve as microtasks), never network or agent work, so no other request
+// can slip statements into an open transaction.
+export function withTransaction<T>(sqlite: Sqlite, fn: () => Promise<T>): Promise<T> {
+  const previous = transactionQueues.get(sqlite) ?? Promise.resolve();
+  const next = previous.then(
+    () => runTransaction(sqlite, fn),
+    () => runTransaction(sqlite, fn),
+  );
+  transactionQueues.set(sqlite, next.catch(() => undefined));
+  return next;
+}
+
+async function runTransaction<T>(sqlite: Sqlite, fn: () => Promise<T>): Promise<T> {
   sqlite.prepare("BEGIN").run();
   try {
     const result = await fn();

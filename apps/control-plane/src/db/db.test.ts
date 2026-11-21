@@ -109,6 +109,22 @@ describe("database", () => {
     expect(await db.select().from(sessions)).toHaveLength(1);
   });
 
+  it("runs concurrent transactions one at a time", async () => {
+    const { db, sqlite } = await open();
+    const slowFailing = withTransaction(sqlite, async () => {
+      await db.insert(sessions).values(sessionRow("s1"));
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      throw new Error("boom");
+    });
+    const second = withTransaction(sqlite, async () => {
+      await db.insert(sessions).values(sessionRow("s2"));
+    });
+    await expect(slowFailing).rejects.toThrow("boom");
+    await second;
+    const rows = await db.select().from(sessions);
+    expect(rows.map((row) => row.id)).toEqual(["s2"]);
+  });
+
   it("keeps data after close and reopen", async () => {
     const first = await open();
     await first.db.insert(sessions).values(sessionRow("s1"));
