@@ -2,6 +2,8 @@
 
 This is a living code repository. As the agent and human work together on this project, this memory file and all its contents will be continuously updated. For coding agent, update this memory whenever you learn new details about the project.
 
+Read user note [here](docs/note.txt).
+
 ## Agent Docs Index (docs/agent-docs)
 Format:
 ```

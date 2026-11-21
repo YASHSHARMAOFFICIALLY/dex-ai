@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dex AI — Proposed Solution Architecture</title>
+  <style>
+    body { margin: 0; padding: 24px; background: #f8fafc; font-family: system-ui, -apple-system, Segoe UI, sans-serif; color: #0f172a; }
+    main { max-width: 920px; margin: 0 auto; }
+    p.note { font-size: 0.9rem; opacity: 0.8; margin: 0 0 10px; }
+    svg { height: auto; display: block; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="note">Corrected topology: the control plane is the server and owns memory + the LLM agent. The extension is the client. Solid arrows are the main flow; dashed orange arrows are the feedback and learning loops.</p>
+  <svg viewBox="0 0 980 900" width="100%">
+    <defs>
+      <marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#64748b"/></marker>
+      <marker id="ao" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#f97316"/></marker>
+    </defs>
+
+    <!-- Learning loop enclosure -->
+    <rect x="24" y="124" width="900" height="580" rx="18" fill="rgba(249,115,22,0.04)" stroke="#f97316" stroke-width="2" stroke-dasharray="9 6"/>
+    <rect x="24" y="104" width="316" height="28" rx="6" fill="#f97316"/>
+    <text x="36" y="123" font-size="14" font-weight="700" fill="#ffffff">LEARNING LOOP — recursive, autonomous</text>
+
+    <!-- Job sites -->
+    <rect x="60" y="50" width="860" height="46" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+    <text x="490" y="79" text-anchor="middle" font-size="15" fill="#0f172a">You, browsing &amp; applying on the job sites you already use</text>
+    <line x1="490" y1="96" x2="490" y2="138" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+    <text x="502" y="120" font-size="11" fill="#475569">browse / apply</text>
+
+    <!-- Extension (client) -->
+    <rect x="60" y="140" width="860" height="130" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="490" y="170" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">Browser Extension — client</text>
+    <text x="490" y="190" text-anchor="middle" font-size="12" fill="#1e40af">observes real sessions · acts in auto mode · captures four event types</text>
+    <rect x="80" y="205" width="195" height="26" rx="5" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="177" y="223" text-anchor="middle" font-size="11" fill="#1e40af">Searches &amp; filters</text>
+    <rect x="285" y="205" width="200" height="26" rx="5" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="385" y="223" text-anchor="middle" font-size="11" fill="#1e40af">Postings opened</text>
+    <rect x="495" y="205" width="190" height="26" rx="5" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="590" y="223" text-anchor="middle" font-size="11" fill="#1e40af">Fields filled</text>
+    <rect x="695" y="205" width="205" height="26" rx="5" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="797" y="223" text-anchor="middle" font-size="11" fill="#1e40af">Stated reasons (text / voice)</text>
+
+    <line x1="490" y1="270" x2="490" y2="308" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+    <text x="502" y="296" font-size="11" fill="#475569">events + requests</text>
+
+    <!-- Control plane (server) -->
+    <rect x="60" y="310" width="860" height="380" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="490" y="340" text-anchor="middle" font-size="16" font-weight="700" fill="#78350f">Web Control Plane — server (localhost)</text>
+    <text x="490" y="358" text-anchor="middle" font-size="12" fill="#92400e">owns memory + the LLM agent · runs the AI agent tasks · all local</text>
+
+    <!-- LLM agent -->
+    <rect x="80" y="372" width="410" height="160" rx="10" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2"/>
+    <text x="285" y="400" text-anchor="middle" font-size="14" font-weight="700" fill="#4c1d95">LLM Agent — uses your subscription</text>
+    <text x="285" y="426" text-anchor="middle" font-size="12" fill="#4c1d95">Codex · Claude Code · OpenCode Go</text>
+    <text x="285" y="450" text-anchor="middle" font-size="12" font-weight="600" fill="#4c1d95">AI agent tasks:</text>
+    <text x="285" y="472" text-anchor="middle" font-size="12" fill="#4c1d95">reasoning, inference, form-filling,</text>
+    <text x="285" y="492" text-anchor="middle" font-size="12" fill="#4c1d95">decisions, self-improvement</text>
+    <text x="285" y="516" text-anchor="middle" font-size="11" font-style="italic" fill="#6d28d9">nothing leaves the device</text>
+
+    <!-- Memory -->
+    <rect x="510" y="372" width="390" height="160" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+    <text x="705" y="400" text-anchor="middle" font-size="14" font-weight="700" fill="#14532d">Memory — SQLite (local only)</text>
+    <text x="705" y="424" text-anchor="middle" font-size="12" fill="#14532d">Four-section profile:</text>
+    <text x="705" y="446" text-anchor="middle" font-size="12" fill="#14532d">1   Facts about you</text>
+    <text x="705" y="466" text-anchor="middle" font-size="12" fill="#14532d">2   Job-source habits</text>
+    <text x="705" y="486" text-anchor="middle" font-size="12" fill="#14532d">3   Preferences &amp; criteria</text>
+    <text x="705" y="506" text-anchor="middle" font-size="12" fill="#14532d">4   Form-filling rules</text>
+    <text x="705" y="524" text-anchor="middle" font-size="10" fill="#15803d">sessions · config · playbooks · revision history</text>
+
+    <line x1="512" y1="452" x2="508" y2="452" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+    <text x="510" y="442" text-anchor="middle" font-size="9" fill="#475569">R/W</text>
+
+    <!-- Supervision panels -->
+    <rect x="80" y="550" width="195" height="112" rx="8" fill="#fffbeb" stroke="#fcd34d"/>
+    <text x="177" y="580" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Profile &amp; rules editor</text>
+    <text x="177" y="604" text-anchor="middle" font-size="11" fill="#92400e">correct inferences</text>
+    <text x="177" y="622" text-anchor="middle" font-size="11" fill="#92400e">edit rules</text>
+    <rect x="285" y="550" width="200" height="112" rx="8" fill="#fffbeb" stroke="#fcd34d"/>
+    <text x="385" y="580" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Session timeline</text>
+    <text x="385" y="604" text-anchor="middle" font-size="11" fill="#92400e">reasoning traces</text>
+    <text x="385" y="622" text-anchor="middle" font-size="11" fill="#92400e">inspect each step</text>
+    <rect x="495" y="550" width="190" height="112" rx="8" fill="#fffbeb" stroke="#fcd34d"/>
+    <text x="590" y="580" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Teaching console</text>
+    <text x="590" y="604" text-anchor="middle" font-size="11" fill="#92400e">dictate rules</text>
+    <text x="590" y="622" text-anchor="middle" font-size="11" fill="#92400e">text or voice</text>
+    <rect x="695" y="550" width="205" height="112" rx="8" fill="#fffbeb" stroke="#fcd34d"/>
+    <text x="797" y="580" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Rehearsal observer</text>
+    <text x="797" y="604" text-anchor="middle" font-size="11" fill="#92400e">watch live reasoning</text>
+    <text x="797" y="622" text-anchor="middle" font-size="11" fill="#92400e">never submit</text>
+
+    <line x1="490" y1="548" x2="490" y2="534" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+    <text x="500" y="546" font-size="10" fill="#475569">review / teach / supervise</text>
+
+    <!-- Feedback: control plane -> extension -->
+    <path d="M920,380 L944,380 L944,205 L922,205" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ao)"/>
+    <text transform="rotate(-90 958 292)" x="958" y="292" text-anchor="middle" font-size="12" fill="#c2410c">feedback: teach · correct · rehearse · auto-actions</text>
+
+    <!-- Loop -> autonomy -->
+    <line x1="490" y1="704" x2="490" y2="728" stroke="#f97316" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ao)"/>
+    <text x="502" y="722" font-size="11" fill="#c2410c">familiarity (seen + confirmed N times)</text>
+
+    <!-- Autonomy gate -->
+    <rect x="60" y="730" width="520" height="150" rx="10" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="320" y="760" text-anchor="middle" font-size="15" font-weight="700" fill="#312e81">Autonomy gate</text>
+    <text x="80" y="786" font-size="12" fill="#312e81">Familiar role type + platform/form (N times) → auto-submit</text>
+    <text x="80" y="808" font-size="12" fill="#312e81">New role type or platform/form → ask for approval</text>
+    <text x="80" y="830" font-size="12" fill="#312e81">Off-criteria job → prepare, then ask</text>
+    <text x="80" y="852" font-size="12" fill="#312e81">New company alone → no approval needed</text>
+
+    <!-- Frozen core -->
+    <rect x="620" y="730" width="320" height="150" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+    <text x="780" y="760" text-anchor="middle" font-size="15" font-weight="700" fill="#7f1d1d">Frozen core (immutable)</text>
+    <text x="640" y="786" font-size="12" fill="#7f1d1d">· local-only storage</text>
+    <text x="640" y="808" font-size="12" fill="#7f1d1d">· never submit before approval</text>
+    <text x="640" y="830" font-size="12" fill="#7f1d1d">· fixed approval thresholds</text>
+    <text x="640" y="852" font-size="12" fill="#7f1d1d">· history for every change</text>
+
+    <line x1="582" y1="805" x2="616" y2="805" stroke="#64748b" stroke-width="2" marker-end="url(#ah)"/>
+    <text x="582" y="798" text-anchor="middle" font-size="10" fill="#475569">guarded by</text>
+  </svg>
+  <p class="note">The control plane is the server: it holds SQLite memory and runs the LLM agent on your subscription. The extension is the client. This matches the OpenChamber-to-OpenCode analogy, with the client/server split inside the local machine.</p>
+</main>
+</body>
+</html>

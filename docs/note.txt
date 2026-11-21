@@ -1,0 +1,11 @@
+Dex AI:
+- An AI agent that records and learns from users applying for job on the browser. This agent is a intern, or junior coworker. You do your job applying on browser normally, while the agent is in the back, learning what you do, how you do it. You can also explain why you do these steps, choose these positions, companies. The agent will reason and learn on its own.
+- Recursively self improve its skill and memory. 
+- It can later apply by itself (auto mode). It will be bad at first, but improve as it works with the user to learn about what to fill, what to avoid, their preference.
+- We use sqlite to store memory, sessions, config, everything
+- Local run, can use subscription from codex, claude code, opencode go
+
+Yash:
+- Find a personalized job, not random. Need personalized memory => need more than AGENTS.md
+- backdoor.ai: they do memory, automatic gmail => auto apply with gmail
+
