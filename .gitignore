@@ -1,3 +1,6 @@
+# ignore playwright
+.playwright-*
+
 # Logs
 logs
 *.log
