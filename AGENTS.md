@@ -4,6 +4,10 @@ This is a living code repository. As the agent and human work together on this p
 
 Read user note [here](docs/note.txt).
 
+## Maintenance rules
+
+- Keep [conventions](docs/agent-docs/conventions.md) in sync with the [tech stack](docs/agent-docs/tech-stack.md). When libraries, frameworks, tools, or verification commands change, update `conventions.md` in the same change.
+
 ## Agent Docs Index (docs/agent-docs)
 Format:
 ```
