@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   await runMigrations(db, sqlite);
 
   const hub = createHub();
-  const app = createApp({ config, db, hub });
+  const app = createApp({ config, db, sqlite, hub });
   const running = await startServer(app, config, hub);
   console.log(`control plane listening on http://${config.host}:${config.port}`);
 

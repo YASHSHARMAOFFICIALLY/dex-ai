@@ -10,14 +10,16 @@ import {
   wsProtocolAuth,
 } from "./auth";
 import type { Config } from "./config";
-import type { Database } from "./db/client";
+import type { Database, Sqlite } from "./db/client";
+import { eventRoutes } from "./routes/events";
 import { healthRoutes } from "./routes/health";
+import { sessionRoutes } from "./routes/sessions";
 import { fixtureRoutes, webRoutes } from "./routes/static";
 import type { Hub } from "./stream/hub";
 
-export type AppDeps = { config: Config; db: Database; hub: Hub };
+export type AppDeps = { config: Config; db: Database; sqlite: Sqlite; hub: Hub };
 
-function apiRoutes({ config, db }: AppDeps): Hono {
+function apiRoutes({ config, db, sqlite, hub }: AppDeps): Hono {
   const api = new Hono();
   api.use("*", loopbackOnly());
   api.use("*", hostAllowlist(config.port));
@@ -32,6 +34,8 @@ function apiRoutes({ config, db }: AppDeps): Hono {
   api.use("*", originAllowlist(config));
   api.use("*", bearerAuth(config.token));
   api.route("/", healthRoutes(db));
+  api.route("/", eventRoutes({ db, sqlite, hub }));
+  api.route("/", sessionRoutes(db));
   return api;
 }
 

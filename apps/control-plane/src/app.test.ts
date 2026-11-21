@@ -48,7 +48,7 @@ beforeEach(async () => {
   closeDb = opened.close;
   await runMigrations(opened.db, opened.sqlite);
   hub = createHub();
-  running = await startServer(createApp({ config, db: opened.db, hub }), config, hub);
+  running = await startServer(createApp({ config, db: opened.db, sqlite: opened.sqlite, hub }), config, hub);
 });
 
 afterEach(async () => {
