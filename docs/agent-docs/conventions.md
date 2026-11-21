@@ -8,6 +8,7 @@ Keep these conventions in sync with the tech stack. When libraries, frameworks, 
 
 - State verifiable facts objectively. Cite reliable sources when relevant, distinguish confirmed facts from uncertainty, and correct errors promptly.
 - Define ambiguous terms and acknowledge limitations. Label speculation as such.
+- Route all LLM work through the single `@opencode/sdk` v2 adapter. Treat direct subscription SDKs as optional alternatives behind `AgentAdapter`.
 
 ## Coding style (language-agnostic)
 
