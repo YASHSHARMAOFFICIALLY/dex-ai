@@ -58,7 +58,7 @@ describe("job-site fixture", () => {
     }
     const submit = testId(doc, "submit-application");
     expect(submit?.getAttribute("type")).toBe("submit");
-    expect(testId(doc, "apply-form")?.getAttribute("action")).toBe("/fixture/submit");
+    expect(testId(doc, "apply-form")?.getAttribute("action")).toBe("/fixtures/job/applications");
   });
 
   it("submission recorder starts empty", () => {
