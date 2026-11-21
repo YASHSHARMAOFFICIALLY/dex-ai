@@ -60,10 +60,10 @@ Keep these conventions in sync with the tech stack. When libraries, frameworks, 
 
 Run all four gates before merge, except for prototypes.
 
-- Typecheck: `tsc --noEmit`
-- Lint: ESLint
-- Build: `vite build`
-- Unit tests: `vitest run`
+- Typecheck: `bun run typecheck` (TypeScript 7 `tsc -b` with project references; `typescript` 6.0.3 stays installed only for typescript-eslint)
+- Lint: `bun run lint` (ESLint)
+- Build: `bun run build` (`vite build`)
+- Unit tests: `bun run test` (`vitest run`)
 
 ## Library and framework APIs
 
