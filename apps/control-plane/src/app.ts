@@ -13,13 +13,22 @@ import type { Config } from "./config";
 import type { Database, Sqlite } from "./db/client";
 import { eventRoutes } from "./routes/events";
 import { healthRoutes } from "./routes/health";
+import { sttRoutes } from "./routes/stt";
 import { sessionRoutes } from "./routes/sessions";
 import { fixtureRoutes, webRoutes } from "./routes/static";
 import type { Hub } from "./stream/hub";
+import { createParakeetTranscriber } from "./stt/parakeet-transcriber";
+import type { Transcriber } from "./stt/transcriber";
 
-export type AppDeps = { config: Config; db: Database; sqlite: Sqlite; hub: Hub };
+export type AppDeps = {
+  config: Config;
+  db: Database;
+  sqlite: Sqlite;
+  hub: Hub;
+  transcriber?: Transcriber;
+};
 
-function apiRoutes({ config, db, sqlite, hub }: AppDeps): Hono {
+function apiRoutes({ config, db, sqlite, hub, transcriber }: AppDeps): Hono {
   const api = new Hono();
   api.use("*", loopbackOnly());
   api.use("*", hostAllowlist(config.port));
@@ -36,6 +45,8 @@ function apiRoutes({ config, db, sqlite, hub }: AppDeps): Hono {
   api.route("/", healthRoutes(db));
   api.route("/", eventRoutes({ db, sqlite, hub }));
   api.route("/", sessionRoutes(db));
+  const stt = transcriber ?? createParakeetTranscriber(config.parakeetModelDir);
+  api.route("/", sttRoutes(stt));
   return api;
 }
 
