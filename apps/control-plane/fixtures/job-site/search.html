@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Search jobs</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html" data-testid="nav-home">Home</a>
+    <a href="search.html" data-testid="nav-search">Search jobs</a>
+  </nav>
+  <main>
+    <h1>Search jobs</h1>
+    <form method="get" action="search.html" data-testid="search-form">
+      <label for="keyword">Keyword</label>
+      <input id="keyword" name="keyword" type="text" value="engineer" data-testid="filter-keyword">
+      <label for="location">Location</label>
+      <select id="location" name="location" data-testid="filter-location">
+        <option value="any">Any</option>
+        <option value="remote" selected>Remote</option>
+        <option value="berlin">Berlin</option>
+      </select>
+      <label for="job_type">Job type</label>
+      <select id="job_type" name="job_type" data-testid="filter-job-type">
+        <option value="full_time" selected>Full time</option>
+        <option value="contract">Contract</option>
+      </select>
+      <button type="submit" data-testid="search-submit">Search</button>
+    </form>
+    <section data-testid="posting-list">
+      <article class="posting" data-testid="posting-item-1">
+        <h2>Software Engineer</h2>
+        <p>Remote, full time</p>
+        <a href="posting.html" data-testid="posting-link-1">View posting</a>
+      </article>
+      <article class="posting" data-testid="posting-item-2">
+        <h2>Support Engineer</h2>
+        <p>Berlin, contract</p>
+        <a href="posting.html" data-testid="posting-link-2">View posting</a>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
